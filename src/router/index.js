@@ -1,3 +1,5 @@
+//配置路由的地方
+
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
@@ -7,6 +9,9 @@ import Home from '../pages/Home'
 import Register from '../pages/Register'
 import Login from '../pages/Login'
 import Search from '../pages/Search'
+
+// let originPush = VueRouter.prototype.push;
+// console.log(originPush);
 
 export default new VueRouter(
     {
