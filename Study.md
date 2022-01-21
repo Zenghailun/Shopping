@@ -192,3 +192,19 @@ router-link:是一个组件，当服务器的数据返回后，循环出很多ro
 ### 开发search模块中的typenav
 
 可以在App.vue里发出dispatch请求，直接放在vuex里，提高性能
+
+### 合并params参数和query参数
+
+### mock.js模拟数据
+
+使用步骤：
+
+- src中建立mock文件夹
+- 创建JSON文件，记得要格式化
+- 将mock中的图片放置到public文件夹中，public文件夹在打包的时候，会把相应的资源原封不动地打包到dist文件夹
+- 创建mockServe.js通过插件实现模拟数据
+- mockServe在入口文件中引入（main.js)
+- 
+
+
+
