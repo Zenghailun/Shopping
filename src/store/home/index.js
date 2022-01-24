@@ -1,11 +1,13 @@
 //home模块的小仓库
 
-import { reqCategoryList, reqGetBannerList } from "../../api"
+import { reqCategoryList, reqGetBannerList, reqFloorList} from "../../api"
 
 const state = {
     //state中数据默认初始值别瞎写，服务器返回对象，服务器返回数组[根据接口的返回值初始化]
     categoryList:[],
     bannerList:[],
+    //服务器返回的数据是数组所以这里也定为数组
+    floorList:[]
 };
 
 const mutations = {
@@ -16,6 +18,10 @@ const mutations = {
     GETBANNERLIST(state, bannerList)
     {
         state.bannerList = bannerList;
+    },
+    GETFLOORLIST(state, floorList)
+    {
+        state.floorList = floorList;
     }
 }
 
@@ -33,6 +39,14 @@ const actions = {
         let result =  await reqGetBannerList();
         if(result.code == 200)
             commit('GETBANNERLIST',result.data)
+    },
+    async getFloorList({commit})
+    {
+        let result = await reqFloorList();
+        if(result.code == 200)
+        {
+            commit("GETFLOORLIST", result.data);
+        }
     }
 }//处理action，可以书写自己的业务逻辑，也可以处理异步
 const getters = {}//计算属性，用于简化仓库数据

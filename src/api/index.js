@@ -9,3 +9,6 @@ export const reqCategoryList = ()=>{
 }
 //获取banner
 export const reqGetBannerList = ()=>mockRequests.get('/banner');
+
+//获取floor数据
+export const reqFloorList = ()=> mockRequests.get('/floor');

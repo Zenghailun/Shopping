@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 //注册三级联动的全局组件
 import TypeNav from './components/TypeNav';
+import Carousel from './components/Carousel'
 //第一个参数：全局组件的名字，第二个参数：哪一个组件
 
 // import {reqCategoryList} from './api'
@@ -11,6 +12,7 @@ import TypeNav from './components/TypeNav';
 // reqCategoryList();
 //全局组件：第一个参数 组件名字 第二个参数：那个组件
 Vue.component(TypeNav.name, TypeNav)
+Vue.component(Carousel.name, Carousel)
 //引入MockServe.js
 import './mock/mockServe'
 import "swiper/css/swiper.css"
