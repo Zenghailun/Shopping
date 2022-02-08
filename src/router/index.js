@@ -2,43 +2,41 @@
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import routes from './routes'
 
 Vue.use(VueRouter)
-
-import Home from '../pages/Home'
-import Register from '../pages/Register'
-import Login from '../pages/Login'
-import Search from '../pages/Search'
-
-// let originPush = VueRouter.prototype.push;
-// console.log(originPush);
-
-export default new VueRouter(
+//需要先重写VueRouter.prototype原型对象身上的push|replace方法
+//先把vuerouter.prototype身上的push|replace方法进行保存一份
+let originPush = VueRouter.prototype.push;
+let originReplace = VueRouter.prototype.replace;
+// 重写push方法
+// 第一个参数：告诉原来push方法，你往哪里跳
+// resolve成功的回调
+// reject失败的回调
+VueRouter.prototype.push = function(location, resolve, reject){
+    if(resolve && reject)
     {
-        routes: [
-            {
-                path:'/home',
-                component:Home
-            },
-            {
-                path:'/register',
-                component:Register
-            },
-            {
-                path:'/login',
-                component:Login
-            },
-            {
-                name:"search",
-                path:'/search/:keyword',
-                component:Search
-            },
-            //重定向，在项目跑起来的时候，访问/，立马让他定向到首页
-            {
-                path:'*',
-                redirect:'/home'
-            }
-        ]
+        originPush.call(this,location,resolve,reject)
     }
-)
+    else{
+        originPush.call(this,location,()=>{},()=>{})
+    }
+};
+// 重写replace方法
+VueRouter.prototype.replace = function(loaction, resolve, reject){
+    if(resolve && reject)
+    {
+        originReplace.call(this,location,resolve,reject)
+    }
+    else{
+        originReplace.call(this,location,()=>{},()=>{})
+    }
+};
 
+//对外暴露vuerouter实例
+export default new VueRouter({
+    routes,
+    scrollBehavior (to, from, savedPosition) {
+        return {y: 0};
+    }
+})
