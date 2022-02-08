@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 import home from "./home";
 import search from './search'
+import detail from "./detail"
 
 //mutation:修改state的唯一手段
 // const mutations = {}
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     // getters
     modules:{
         home,
-        search
+        search,
+        detail
     }
 });

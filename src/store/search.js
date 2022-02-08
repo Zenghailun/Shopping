@@ -1,4 +1,4 @@
-import { reqGetSearchInfo } from "../../api"
+import { reqGetSearchInfo } from "../api"
 
 const state = {
     searchList:{}

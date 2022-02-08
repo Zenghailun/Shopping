@@ -1,6 +1,6 @@
 //home模块的小仓库
 
-import { reqCategoryList, reqGetBannerList, reqFloorList} from "../../api"
+import { reqCategoryList, reqGetBannerList, reqFloorList} from "../api"
 
 const state = {
     //state中数据默认初始值别瞎写，服务器返回对象，服务器返回数组[根据接口的返回值初始化]

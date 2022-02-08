@@ -200,11 +200,123 @@ router-link:是一个组件，当服务器的数据返回后，循环出很多ro
 使用步骤：
 
 - src中建立mock文件夹
+
 - 创建JSON文件，记得要格式化
+
 - 将mock中的图片放置到public文件夹中，public文件夹在打包的时候，会把相应的资源原封不动地打包到dist文件夹
+
 - 创建mockServe.js通过插件实现模拟数据
+
 - mockServe在入口文件中引入（main.js)
-- 
+
+### P46
+
+* 重新获得面包屑（数据）后，该如何重新展示页面？
+
+   ​	再次跳转至当前页面并携带params参数,这个时候路径的params、query参数就可以被清空了
+
+* 取消搜索框带来的面包屑后，该如何把搜索框中(兄弟组件header）的面包屑置空？
+
+  ​	一个在header组件一个在search组件，配置全局时间总线$bus,同时再次跳转路由，把路由里的params参数清空
+
+  
+### P48
+* 点击品牌商标，如何再次点击后的页面
+
+  商标是在searchselector子组件中，所以要发送请求（searchparams在父组件中）只能在父组件中发送，通过自定义事件将数据由子组件传递到父组件
+
+  
+
+### P49
+* 避免商品重复属性的出现(数组去重)
+
+	往数组push的时候应该去判断，用indexOf判断元素的索引值是否为-1,==js里的删除数组中某一个元素的语法==splice(,)
+
+### P50 对商品进行排序
+
+（价格|综合）||（升序|降序）四种商品排序方式
+
+* 怎么点击哪个模块哪个模块就显示相应的背景颜色
+
+​	通过发送给服务器的属性值（order）来判断，代码写法：
+
+```js
+<li :class="{active:searchParams.order.indexOf('1')!=-1}">
+```
+
+* computed、methods的区别
+
+	即便是多处多次调用，computed 也只被调用一次，这就是 computed 缓存的优势。所依赖的数据发生变化时，computed:{}又会被再次调用
+
+* 箭头该放在哪里的问题,怎么使用网络图标
+	
+  也是判断属性值，用v-show,箭头的生成可以使用阿里巴巴图标矢量库，记得在生成的链接中加入协议名称：https://......
+  
+  ```js
+  class="iconfont" :class="{'icon-UP':isAsc}"
+  ```
+  
+  
 
 
 
+  
+
+### P55 分页器
+
+* 自定义分页器的时候，开发的时候自己先传家的数据进行测试
+
+* 向上取整==Math.ceil==
+
+* 很重要的事情：算出连续页码的起始数字和结束数字，考虑数据不够页数用的情况，规避bug
+
+* V-for:数组|数字|字符串|对象,v-for遍历数字的时候从1开始
+
+	
+### P59 开发产品的详情页
+
+* 代码顺序：静态组件-》发请求-》vuex-》动态展示组件
+
+* 点击商品的图片，需要把商品的id路由传参到详情页面
+* 路由跳转时将跳转后的页面的滚轮保持在顶部:滚动行为（官网上有）`scrollBehavior`
+* params路由传参时，？表示params可以传递也可以不传递
+* this.$router这个属性，是VueRouter类的一个实例，当在入口文件注册路由的时候，给组件添加`$router|$route`属性
+
+#### vuex的操作
+```js
+//在组件某个生命周期(mounted)里
+this.$store.dispatch('x123',parameter)
+//在store文件夹里
+//引入接口
+import {dafsdsaf} from "xxx/api"
+//四件套
+const state={
+    xxx:{}//state的数据类型要由服务器那边决定
+}
+const mutations={
+    X123(state,xxx)
+    {
+        state.xxx = xxx
+    }
+}
+const actions={
+    async x123({commit},parameter)
+    {
+        let result = await reqGoodsInfo(skuId)
+        if(result.code == 200)
+        {
+            commit('X123',result.data)
+        }
+    }
+}
+const getters={
+    
+}
+
+export default{
+    state,
+    mutations,
+    actions,
+    getters
+}
+//对外暴露
