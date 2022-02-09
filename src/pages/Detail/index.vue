@@ -349,6 +349,7 @@
 <script>
   import ImageList from './ImageList/ImageList'
   import Zoom from './Zoom/Zoom'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'Detail',
@@ -359,7 +360,10 @@
     },
     mounted(){
       //派发action
-      this.$store.dispatch('getGoodInfo',this.$route.params.skuId)
+      this.$store.dispatch('getGoodInfo',this.$route.params.skuid)
+    },
+    computed:{
+      ...mapGetters(['categoryView'])
     }
   }
 </script>
