@@ -1,11 +1,11 @@
-import { reqGoodsInfo } from "../api"
+import { reqGoodsInfo,reqAddOrUpdateShopCart} from "../api"
 const state={
   goodInfo:{}
 }
 const mutations={
   GETGOODINFO(state,goodInfo)
   {
-    state.getGoodInfo = goodInfo;
+    state.goodInfo=goodInfo
   }
 }
 const actions={
@@ -16,6 +16,18 @@ const actions={
     {
       commit('GETGOODINFO',result.data)
     }
+  },
+  async addOrUpdateShortCart({commit},{skuId,skuNum})
+  {
+    let result = await reqAddOrUpdateShopCart(skuId,skuNum)
+    if(result.code==200)
+    {
+      return "ok"
+    }
+    else{
+      //代表p失败
+      return Promise.reject(new Error('faile'))
+    }
   }
 }
 
@@ -23,8 +35,16 @@ const actions={
 const getters={
   categoryView(state)
   {
-    return state.goodInfo.categoryView;
+    return state.goodInfo.categoryView||{};
   },
+  skuInfo(state)
+  {
+    return state.goodInfo.skuInfo||{};
+  },
+  spuSaleAttrList(state)
+  {
+    return state.goodInfo.spuSaleAttrList||[];
+  }
 }
 
 export default{

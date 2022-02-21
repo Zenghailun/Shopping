@@ -253,7 +253,7 @@ router-link:是一个组件，当服务器的数据返回后，循环出很多ro
   也是判断属性值，用v-show,箭头的生成可以使用阿里巴巴图标矢量库，记得在生成的链接中加入协议名称：https://......
   
   ```js
-  class="iconfont" :class="{'icon-UP':isAsc}"
+  class="iconfont" :class="{'icon-UP':isAsc}"//绑定属性
   ```
   
   
@@ -333,3 +333,102 @@ export default{
     getters
 }
 //对外暴露
+```
+
+#### 困难：getters用不上
+
+因为state仓库里的值默认是空对象，所以当服务器的数据没有返回时。会是undefine，让页面报错
+
+* 解决方法：在getters里的return返回时`fasdfa||{}`,这样至少能返回一个空对象
+
+### P56放大镜
+
+* 向子组件传递图片信息`<Zoom :skuImageList="skuInfo.skuImageList">`,在子组件里用props接收
+* 放大：给一个盒子类标注为big，在`<style>`里放大
+* swiper里显示几个图片设置：`slidesPreView:`
+
+#### 困难
+
+<Zoom :skuImageList="skuInfo.skuImageList">可能传入的skuImageList是undefined，在detail的组件里computed返回一个||[]
+
+* 用swiper的时候nextTick的使用,在下次DOM更新循环之后执行延迟回调
+
+	```js
+	  watch: {
+	    //监听数据：可以保证数据一定ok，但是不能保证v-for是否完事
+	    skuImageList(newValue, oldValue) {
+	      this.$nextTick(() => {
+	        new Swiper(this.$refs.cur, {
+	```
+
+	
+
+* 绑定选中样式：`:class="{active:spuSaleAttrValue.isChecked==1}"`
+
+* 点击切换被选中样式：先全部不被选中，然后其中一个被选中
+
+#### 点击绑定属性（第二次)点击是哪个图片就哪个图片显示出被点击的样子
+
+```js
+:class="{active:currentIndex==index}"//记得引号
+```
+
+
+
+#### 兄弟组件通信方式
+
+```js
+//兄弟1
+this.$bus.$emit('getIndex',this.currentIndex)
+//兄弟2
+this.$bus.$on('getIndex',(index)=>{
+    
+})
+```
+
+#### 没看懂
+
+放大镜那里为什么乘-2
+
+```js
+big.style.left = -2 * left + 'px'
+big.style.top = -2 * top + 'px'
+```
+
+### P68加入购物车
+
+* 收集表单的数据：`input v-model`
+
+* `@click="skuNum>1?skuNum--:skuNum=1"`
+
+* 给文本框绑定事件，聚焦失焦`@change`
+
+* 用户输入检测：将用户输入的内容*1，可以避免非法内容输入
+
+```js
+changeSkuNum(event){
+        let value = event.target.value * 1;
+        //如果输入进来的非法,出现NaN或者小于1
+        if(isNaN(value)||value<1)
+        {
+          this.skuNum = 1
+        }
+        else{
+          this.skuNum = parseInt(value)
+        }
+      }
+```
+
+​	
+
+==加入购物车要做的事情==向服务器发送请求，带着参数进行路由跳转
+
+#### 难点:如何将成功与失败的结果从vuex返回到组件当中
+
+异步函数asnyc具有返回值，返回的是一个promise,成功：非空字符串，失败：Promise.reject
+
+```js
+```
+
+
+

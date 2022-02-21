@@ -3,6 +3,7 @@ import Register from '../pages/Register'
 import Login from '../pages/Login'
 import Search from '../pages/Search'
 import Detail from '../pages/Detail'
+import AddCartSuccess from '../pages/AddCartSuccess'
 
 // let originPush = VueRouter.prototype.push;
 // console.log(originPush);
@@ -40,5 +41,11 @@ export default  [
   {
       path:'*',
       redirect:'/home'
-  }
+  },
+  {
+			path:'/addcartsuccess',
+			name:'addcartsuccess',
+			component:AddCartSuccess,
+			meta:{isShow:true},
+	}
 ]
