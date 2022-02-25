@@ -84,8 +84,8 @@
                 <a href="javascript:" class="mins" @click="skuNum>1?skuNum--:skuNum=1">-</a>
               </div>
               <div class="add">
-                <!-- <a @click="addShopcar">加入购物车</a> -->
-                <a>加入购物车</a>
+                <a @click="addShopcar">加入购物车</a>
+                <!-- <a>加入购物车</a> -->
               </div>
             </div>
           </div>
@@ -374,25 +374,27 @@
           this.skuNum = parseInt(value)
         }
       },
-      // async addShopCar()
-      // {
-      //   //发请求
-      //   //服务器存储成功，进行路由跳转
-      //   //失败，给用户提示
-      //   try {
-      //     await this.$store.dispatch('addOrUpdateShortCart',
-      //     {
-      //       skuId:this.$route.params.skuid,
-      //       skuNum:this.skuNum
-      //     })
-      //     this.$router.push({name:'addcartsuccess'})
-      //   } 
-      //   //进行路由跳转
-        
-      //   catch (error) {
-      //     alert(error.message)
-      //   }
-      // }
+      async addShopcar()
+      {
+        //发请求
+        //服务器存储成功，进行路由跳转
+        //失败，给用户提示
+        try {
+          await this.$store.dispatch('addOrUpdateShopCart',
+          {
+            skuId:this.$route.params.skuid,
+            skuNum:this.skuNum
+          })
+          //会话存储
+          sessionStorage.setItem("SKUINFO",JSON.stringify(this.skuInfo))
+          //进行路由跳转
+          this.$router.push({name:'addcartsuccess',query:{skuNum:this.skuNum}})
+        } 
+          
+        catch (error) {
+          alert(error.message)
+        }
+      }
     },
     computed:{
       ...mapGetters(['categoryView','skuInfo','spuSaleAttrList']),

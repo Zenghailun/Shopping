@@ -398,13 +398,9 @@ big.style.top = -2 * top + 'px'
 ### P68加入购物车
 
 * 收集表单的数据：`input v-model`
-
 * `@click="skuNum>1?skuNum--:skuNum=1"`
-
 * 给文本框绑定事件，聚焦失焦`@change`
-
 * 用户输入检测：将用户输入的内容*1，可以避免非法内容输入
-
 ```js
 changeSkuNum(event){
         let value = event.target.value * 1;
@@ -418,17 +414,71 @@ changeSkuNum(event){
         }
       }
 ```
-
-​	
+* 用uuid代表临时游客身份，新建文件夹utils放一些常用的功能模块，比如临时身份，正则
+* 在请求中携带uuid参数，在请求头中添加一个字段（要和后台商量好	
 
 ==加入购物车要做的事情==向服务器发送请求，带着参数进行路由跳转
 
-#### 难点:如何将成功与失败的结果从vuex返回到组件当中
-
-异步函数asnyc具有返回值，返回的是一个promise,成功：非空字符串，失败：Promise.reject
-
 ```js
+//请求拦截器:在发请求之前，请求拦截器可以检测的到，可以在请求发出去之前做一些事
+requests.interceptors.request.use((config)=>{
+    //config:配置对象，配置对象有一个属性很重要，headers请求头
+    //进度条开始
+    if(store.state.detail.uuid_token)
+    {
+        config.headers.userTempId = store.state.detail.uuid_token
+    }
+    nprogress.start();
+    return config;
+})
 ```
 
 
 
+#### 难点:
+* 如何将成功与失败的结果从vuex返回到组件当中
+
+异步函数asnyc具有返回值，返回的是一个promise,成功：非空字符串，失败：Promise.reject
+
+* 如何路由传参的时候传递一个对象
+
+下面这种也可以，但是最好用本地存储或者会话存储
+
+`this.$router.push({name:'addcartsuccess',query:{skuInfo:this.skuInfo,skuNum:this.skuNum}})`
+
+skuInfo是对象，在路由传参的时候会传递的是字符串，很不好看
+
+* 本地存储：持久化的----最多5M
+
+* 会话存储；并非持久的----会话结束就消失
+
+	==本地存储或者对话存储一般存储的是字符串，不能存储对象==
+
+
+```js
+ async addShopcar()
+      {
+        //发请求
+        //服务器存储成功，进行路由跳转
+        //失败，给用户提示
+        try {
+          await this.$store.dispatch('addOrUpdateShopCart',
+          {
+            skuId:this.$route.params.skuid,
+            skuNum:this.skuNum
+          })
+          //会话存储
+          sessionStorage.setItem("SKUINFO",JSON.stringify(this.skuInfo))
+          //进行路由跳转
+          this.$router.push({name:'addcartsuccess',query:{skuNum:this.skuNum}})
+        } 
+          
+        catch (error) {
+          alert(error.message)
+        }
+      }
+```
+
+
+
+==犯过的错误==mutations里传参忘记带state了
