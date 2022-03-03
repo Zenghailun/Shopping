@@ -526,4 +526,46 @@ deleteAllCheckedCart({dispatch,getters})
 #### 注册
 
 * 先弄好业务逻辑，表单验证可以先不做
-* 
+
+	```js
+	const { xxx } = this.state;
+	上面的写法是es6的写法，其实就相当于：
+	
+	const xxx = this.state.xxx
+	```
+
+#### 登录
+
+* Token:令牌，登录成功的时候，后台为了区分用户是谁，服务器下发token，唯一标识符，
+
+一般登录成功过服务器会下发token，前台持久化存储token，带着token找服务器要用户进行数据展示
+
+* 在html代码中每输入一个转义字符&nbsp就表示一个空格，输入十个&nbsp，页面中就显示10个空格位置。
+
+	而在html代码中输入空格，不管输入多少个空格，最终在页面中显示的空格位置只有一个。
+
+* .prevent阻止默认事件
+
+* vuex存储不能持久化
+
+#### 携带token给服务器
+
+```js
+//请求拦截器:在发请求之前，请求拦截器可以检测的到，可以在请求发出去之前做一些事
+requests.interceptors.request.use((config)=>{
+    //config:配置对象，配置对象有一个属性很重要，headers请求头
+    //进度条开始
+    if(store.state.detail.uuid_token)
+    {
+        config.headers.userTempId = store.state.detail.uuid_token
+    }
+    //需要携带token给服务器
+    if(store.state.user.token)
+    {
+        config.headers.token = store.state.user.token
+    }
+    nprogress.start();
+    return config;
+})
+```
+

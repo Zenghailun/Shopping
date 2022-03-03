@@ -29,3 +29,11 @@ export const reqCartList = ()=>requests({url:'/cart/cartList', method:"get"})
 export const reqDeleteCartById = (skuId)=>requests({url:`/cart/deleteCart/${skuId}`,method:'delete'})
 //修改商品的选中状态
 export const reqUpdateCheckedByid = (skuId,isChecked)=>requests({url:`/cart/checkCart/${skuId}/${isChecked}`,method:'get'})
+//发送验证码
+export const reqCode = (phone)=>requests({url:`/user/passport/sendCode/${phone}`,method:'get'})
+//发送用户注册信息
+export const reqUserRegister=(data)=>requests({url:'/user/passport/register',data,method:'post'})
+//登录
+export const reqUserLogin=(data)=>requests({url:'/user/passport/login',data,method:'post'})
+//获取用户信息【因为vuex存储不能持久化，一刷新就没有了，所以需要带着用户的token向服务器要用户信息】
+export const reqUserInfo=()=>requests({url:'/user/passport/auth/getUserInfo',method:'get'})

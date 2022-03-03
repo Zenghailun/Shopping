@@ -5,14 +5,20 @@
       <div class="top">
         <div class="container">
           <div class="loginList">
+            <!-- 没有用户名 -->
             <p>尚品汇欢迎您！</p>
-            <p>
+            <p v-if="!userName">
               <span>请</span>
               <!-- <a href="###">登录</a>
                         <a href="###" class="register">免费注册</a> -->
               <!-- 声明式导航必须要有to属性 -->
               <router-link to="/login">登录</router-link>
               <router-link to="/register" class="register">注册 </router-link>
+            </p>
+            <!-- 有用户名 -->
+            <p v-else>
+              <a>{{userName}}</a>
+              <a class="register">退出登录</a>
             </p>
           </div>
           <div class="typeList">
@@ -87,6 +93,12 @@ export default {
     this.$bus.$on("clear",() => {
       this.keyword = "";
     })
+  },
+  computed:{
+    userName()
+    {
+      return this.$store.user.userInfo.name
+    }
   }
 };
 </script>

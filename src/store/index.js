@@ -7,6 +7,7 @@ import home from "./home";
 import search from './search'
 import detail from "./detail"
 import shopcart from "./shopcart"
+import user from './user'
 
 //mutation:修改state的唯一手段
 // const mutations = {}
@@ -24,6 +25,7 @@ export default new Vuex.Store({
         home,
         search,
         detail,
-        shopcart
+        shopcart,
+        user
     }
 });
